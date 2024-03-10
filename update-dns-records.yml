@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Retrieve API key with TOTP token
+      uri:
+        url: "https://mail.liquid-hosting.be/admin/login"
+        method: POST
+        user: "me@liquid-hosting.be"
+        password: "Liquidhosting441642!@#"
+        headers:
+          X-Auth-Token: "{{ auth_token }}"
+        return_content: yes
+        force_basic_auth: yes
+      register: login_response
+
+    - name: Display API key
+      debug:
+        msg: "API Key: {{ login_response.json.api_key }}"
+
+    - name: Encode API key and email
+      set_fact:
+        authorization_token: "{{ ('me@liquid-hosting.be:' + login_response.json.api_key) | b64encode }}"
+
+    - name: Debug authorization token
+      debug:
+        msg: "Authorization Token: {{ authorization_token }}"
+
+# Encode API key and email for Authorization
+#
+
+    - name: Update DNS records for newly created droplets
+      uri:
+        url: "https://mail.liquid-hosting.be/admin/dns/custom/{{ item.item }}"
+        method: PUT
+        headers:
+          Authorization: "Basic {{ authorization_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body: >
+          {
+            "type": "A",
+            "name": "{{ item.item.split('.')[0] }}",
+            "data": "{{ item.data.droplet.networks.v4 | selectattr('type', 'equalto', 'public') | map(attribute='ip_address') | first }}",
+            "ttl": 3600
+          }
+        status_code: 200
+      loop: "{{ created_droplets.results }}"
+      when: login_response.json.status == "ok"
+

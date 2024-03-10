@@ -1,0 +1,63 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+ 
+  tasks:
+    - name: Retrieve API key
+      uri:
+        url: "https://mail.liquid-hosting.be/admin/login"
+        method: POST
+        user: "name@email.tld"
+        password: "yourpassword"
+        headers:
+          X-Auth-Token: "{{ auth_token }}"
+        return_content: yes
+        force_basic_auth: yes
+      register: login_response
+
+    - name: Display API key
+      debug:
+        msg: "API Key: {{ login_response.json.api_key }}"
+
+    - name: Encode API key and email
+      set_fact:
+        authorization_token: "{{ ('name@email.tld:' + login_response.json.api_key) | b64encode }}"
+
+    - name: Debug authorization token
+      debug:
+        msg: "Authorization Token: {{ authorization_token }}"
+
+
+
+    - name: create two droplets
+      digital_ocean_droplet:
+        unique_name: yes
+        region: ams3
+        image: ubuntu-22-04-x64
+        wait_timeout: 100
+        name: "{{ item }}"
+        size_id: s-1vcpu-1gb
+        state: present
+        oauth_token: "{{ lookup('ansible.builtin.env', 'DO_API_TOKEN') }}"
+        ssh_keys: [ '12345678' ] #curl -X GET -H "Authorization: Bearer YOUR_DIGITALOCEAN_ACCESS_TOKEN" "https://api.digitalocean.com/v2/account/keys" 
+        tags: [ 'webserver' ]
+      register: created_droplets
+      with_items:
+        - tmp1.overlaet.com
+        - tmp2.overlaet.com
+
+
+# Encode API key and email for Authorization
+# https://mailinabox.email/api-docs.html
+    - name: Update DNS record for the first created droplet
+      uri:
+        url: "https://mail.liquid-hosting.be/admin/dns/custom/{{ created_droplets.results[0].item }}"
+        method: PUT
+        headers:
+          Content-Type: "text/plain"
+          Authorization: "Basic {{ authorization_token }}"
+        body: "{{ created_droplets.results[0].data.droplet.networks.v4 | selectattr('type', 'equalto', 'public') | map(attribute='ip_address') | first }}"
+        body_format: raw
+        status_code: 200
+

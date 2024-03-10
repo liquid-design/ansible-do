@@ -1,0 +1,13 @@
+https://docs.digitalocean.com/reference/api/api-reference/#operation/droplets_get
+https://docs.digitalocean.com/reference/api/example-usage/
+
+https://nickolasfisher.com/blog/How-to-Create-Multiple-Digital-Ocean-Droplets-and-Provision-Them-Using-Ansible
+https://www.digitalocean.com/community/questions/cannot-execute-ansible-playbook-to-provision-digitalocean-droplets
+
+https://spinupwp.com/automating-server-setup-ansible/#author-box
+https://docs.ansible.com/ansible/latest/collections/community/digitalocean/digital_ocean_module.html#ansible-collections-community-digitalocean-digital-ocean-module
+
+https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-automate-initial-server-setup-on-ubuntu-20-04
+https://github.com/tlezotte/ansible-wp-cli/tree/master
+
+#

@@ -1,0 +1,29 @@
+---
+- name: Install Apache again and set up a hello world page
+  hosts: tmp2.overlaet.com
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600 # Cache valid for 1 hour to avoid unnecessary updates
+
+    - name: Install Apache
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
+    - name: Create a simple hello world HTML page
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+            <head><title>Hello World</title></head>
+            <body><p>Hello World</p></body>
+          </html>
+        owner: www-data
+        group: www-data
+        mode: '0644'
+

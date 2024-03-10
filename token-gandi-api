@@ -1,0 +1,54 @@
+# https://api.gandi.net/docs/domains/
+# go to username -> dropdown -> User Settings (section: Personal access tokens)
+#
+# Bearer: this is randomized from my keyboard and invalid for use. Just demonstration
+87r234293924g8g348g394h4fg8f483443u3h474
+
+
+# Check Token: 
+curl -H "Authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474" https://id.gandi.net/tokeninfo
+
+Output:
+{"user_id": "f123557c-d5a3-11ee-8bc6-00163eada87b", "sharing_id": "fehfdhfowe-538634-12dff-82d4-09*egdjdhfde7731", "pat_id": "04628c26-da44-11ee-ab8c-00163e94b645", "pat_name": "ansible", "scope": ["domain:view", "domain:tech"], "entities": [{"id": "94fhfowe-5837-12e7-8234-09383h3sde673631"}], "expires_in": 7486659}
+
+# Create Glue Records
+curl -X POST \
+  https://api.gandi.net/v5/domain/domains/myfugazi.be/hosts \
+  -H 'Authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474' \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"ns1.mail","ips":["123.456.789.123"]}'
+
+Output:
+{"message":"Glue record creation in progress."}
+
+# Update Glue Records
+curl -X PUT \
+  https://api.gandi.net/v5/domain/domains/myfugazi.be/hosts/ns3.mail \
+  -H 'Authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474' \
+  -H 'Content-Type: application/json' \
+  -d '{"ips":["123.456.789.123"]}'
+
+# DNSSEC - GET DELETE POST
+
+curl -X GET \
+  https://api.gandi.net/v5/domain/domains/myfugazi.be/dnskeys \
+  -H 'authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474'
+
+Output:
+[{"algorithm":13,"type":"ksk","public_key":"owhew7hewoevieurgwehfwuhoiefnwg3y2724t83t48gf3hf94h38fgf6g43fhi3h4fi34g4fg83g4fiwh4i44==","keytag":63635,"id":983735,"digest_type":2,"digest":"734y834fu3ofiug34iygfiewgfi443443u3h474","href":"https://api.gandi.net/v5/domain/domains/myfugazi.be/dnskeys/"}]
+
+curl -X DELETE \
+  https://api.gandi.net/v5/domain/domains/myfugazi.be/dnskeys/994175 \
+  -H 'authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474'
+
+Output:
+{"message":"DNS key(s) deleted."}
+
+curl -X POST \
+  https://api.gandi.net/v5/domain/domains/myfugazi.be/dnskeys \
+  -H 'authorization: Bearer 87r234293924g8g348g394h4fg8f483443u3h474' \
+  -H 'content-type: application/json' \
+  -d '{"algorithm":13,"type":"ksk","public_key":"owhew7hewoevieurgwehfwuhoiefnwg3y2724t83t48gf3hf94h38fgf6g43fhi3h4fi34g4fg83g4fiwh4i44=="}'
+
+Output:
+{"message":"The DNS key 73555 is being created."}

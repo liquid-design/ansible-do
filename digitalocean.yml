@@ -1,0 +1,4 @@
+# dynamic inventory stuff
+plugin: community.digitalocean.digitalocean
+api_token: dop_v1_13sddsjkrandom this is the place for your DO token f4202af81kgd7tdclshseiuywhdsljh 
+

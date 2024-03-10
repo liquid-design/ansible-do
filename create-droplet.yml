@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: create two droplets
+      digital_ocean_droplet:
+        unique_name: yes
+        region: ams3
+        image: ubuntu-22-04-x64
+        wait_timeout: 100
+        name: "{{ item }}"
+        size_id: s-1vcpu-1gb
+        state: present
+        oauth_token: "{{ lookup('ansible.builtin.env', 'DO_API_TOKEN') }}"
+        ssh_keys: [ '12345678' ] # curl -X GET -H "Authorization: Bearer YOUR_DIGITALOCEAN_ACCESS_TOKEN" "https://api.digitalocean.com/v2/account/keys"
+        tags: [ 'webserver' ]
+      register: created_droplets
+      with_items:
+        - tmp1.overlaet.com
+        - tmp2.overlaet.com
+
+ 
+    - name: add to dynamic inventory
+      add_host:
+        name: "{{ item.data.droplet.networks.v4 | selectattr('type', 'equalto', 'public') | map(attribute='ip_address') | first }}"
+        groups: do
+      loop: "{{ created_droplets.results }}"
+

@@ -1,0 +1,7 @@
+# In a new terminal session set DO_APT_TOKEN with one of your environments
+# ToDo use ansible-vault stuff
+# The tokens below are randomized from my keyboard and invalid, just to demonstrate to get you rown token
+
+export DO_API_TOKEN= #do this in your terminal if you dont have a vault
+dop_v1_7y7843gfuhiuersbyochrilcvlisbeodcsvhws7eg9qwheohqwefboqwhefougwe = Cyberwars
+dop_v1_86we8fwebywbgi76tfc7ie4gbxewgf74wxfiuwgfyxgwuyfgowgfwgefuwfdsjhb = My Team

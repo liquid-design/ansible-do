@@ -31,7 +31,7 @@
 
     - name: Update DNS records for newly created droplets
       uri:
-        url: "https://mail.liquid-hosting.be/admin/dns/custom/{{ item.item }}"
+        url: "https://mail.domain.tld/admin/dns/custom/{{ item.item }}"
         method: PUT
         headers:
           Authorization: "Basic {{ authorization_token }}"

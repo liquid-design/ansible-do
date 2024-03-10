@@ -18,8 +18,8 @@
         tags: [ 'webserver' ]
       register: created_droplets
       with_items:
-        - tmp1.overlaet.com
-        - tmp2.overlaet.com
+        - tmp1.domain.tld
+        - tmp2.domain.tld
 
  
     - name: add to dynamic inventory

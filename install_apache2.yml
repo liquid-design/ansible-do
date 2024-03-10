@@ -1,6 +1,6 @@
 ---
 - name: Install Apache again and set up a hello world page
-  hosts: tmp2.overlaet.com
+  hosts: tmp2.domain.tld
   become: yes
   gather_facts: yes
 

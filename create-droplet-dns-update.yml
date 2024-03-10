@@ -6,7 +6,7 @@
   tasks:
     - name: Retrieve API key
       uri:
-        url: "https://mail.liquid-hosting.be/admin/login"
+        url: "https://mail.domain.tld/admin/login"
         method: POST
         user: "name@email.tld"
         password: "yourpassword"
@@ -44,15 +44,15 @@
         tags: [ 'webserver' ]
       register: created_droplets
       with_items:
-        - tmp1.overlaet.com
-        - tmp2.overlaet.com
+        - tmp1.domain.tld
+        - tmp2.domain.tld
 
 
 # Encode API key and email for Authorization
 # https://mailinabox.email/api-docs.html
     - name: Update DNS record for the first created droplet
       uri:
-        url: "https://mail.liquid-hosting.be/admin/dns/custom/{{ created_droplets.results[0].item }}"
+        url: "https://mail.domain.tld/admin/dns/custom/{{ created_droplets.results[0].item }}"
         method: PUT
         headers:
           Content-Type: "text/plain"

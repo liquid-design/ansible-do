@@ -13,12 +13,12 @@ Always ensure that you're transmitting sensitive information like API keys over 
 Keep your API key confidential to prevent unauthorized access to your account.
 The exact curl command and API usage details may vary depending on the specific endpoint you're accessing and the operation you're performing (GET, POST, etc.).
 
-curl -X POST --user "user@email.tld:Pass\!word" "https://mail.liquid-hosting.be/admin/login" -H "X-Auth-Token: 123456"
+curl -X POST --user "user@email.tld:Pass\!word" "https://mail.domain.tld/admin/login" -H "X-Auth-Token: 123456"
 
 Output:
 {
   "api_key": "sdbkisbvkjsjkrhfiuweh7rye7e97r79reerh79erg7wh4iubifef",
-  "email": "me@liquid-hosting.be",
+  "email": "user@domain.tld",
   "privileges": [
     "admin"
   ],
@@ -31,7 +31,7 @@ Output:
 77g79ewgr9hw94hg97g4f9wh4eg97rge94hg0whghewiugfhwfjwjfhwg683gf3868gefyiuwfigrygr8f7h49wh4huiwg4iygf8wg4frgr==
 
 
-curl -X GET "https://mail.liquid-hosting.be/admin/mail/users?format=<string>" \
+curl -X GET "https://mail.domain.tld/admin/mail/users?format=<string>" \
   -H "Authorization: Basic 77g79ewgr9hw94hg97g4f9wh4eg97rge94hg0whghewiugfhwfjwjfhwg683gf3868gefyiuwfigrygr8f7h49wh4huiwg4iygf8wg4frgr==" \
   -H "Content-Type: application/json"
 
@@ -43,7 +43,7 @@ user4@domain.tld
 user5@domain.tld
 etc,...
 
-curl -X PUT "https://mail.liquid-hosting.be/admin/dns/custom/tmp1.overlaet.com" \
+curl -X PUT "https://mail.domain.tld/admin/dns/custom/sub.domain.tld" \
   -H "Content-Type: text/plain" \
   --data-raw "123.456.789.123" \
   -H "Authorization: Basic 77g79ewgr9hw94hg97g4f9wh4eg97rge94hg0whghewiugfhwfjwjfhwg683gf3868gefyiuwfigrygr8f7h49wh4huiwg4iygf8wg4frgr=="
